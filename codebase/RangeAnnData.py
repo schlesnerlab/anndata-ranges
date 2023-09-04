@@ -58,4 +58,7 @@ def read_h5mu(filename):
     """Read mudata object from h5mu file and change __class__ to RangeMuData"""
     mu = mudata.read_h5mu(filename)
     mu.__class__ = RangeMuData
+    # Read keys from mu and change class to RangeAnnData in mod
+    for k in mu.mod.keys():
+        mu.mod[k].__class__ = RangeAnnData
     return mu
