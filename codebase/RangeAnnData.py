@@ -22,13 +22,6 @@ def slice_granges(adata, chrom, start, end):
 
 
 class RangeAnnData(AnnData):
-    # if anndata object is given initalize with anndata 
-    # else use AnnData to initialize
-    def __init__(self, anndata=None, **kwargs):
-        if anndata is not None:
-            self = anndata
-        else:
-            super().__init__(**kwargs)
 
     def set_coord(self, range_df):
         # Check if range_df is a bedframe
