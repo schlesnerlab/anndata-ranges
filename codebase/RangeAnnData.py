@@ -1,5 +1,5 @@
-from mudata import MuData
-from anndata import AnnData
+import mudata
+import anndata
 import bioframe as bf
 
 
@@ -21,7 +21,7 @@ def slice_granges(adata, chrom, start, end):
     return adata[:, idx]
 
 
-class RangeAnnData(AnnData):
+class RangeAnnData(anndata.AnnData):
 
     def set_coord(self, range_df):
         # Check if range_df is a bedframe
@@ -39,7 +39,7 @@ class RangeAnnData(AnnData):
         return self[:, idx]
 
 
-class RangeMuData(MuData):
+class RangeMuData(mudata.MuData):
     def subset_by_overlap(self, granges):
         return self.__class__({k: self.mod[k].subset_by_overlap(granges) for k in self.mod.keys()})
 
@@ -49,12 +49,13 @@ class RangeMuData(MuData):
 
 def read_h5ad(filename):
     """Read anndata object from h5ad file and change __class__ to RangeAnnData"""
-    anndata = AnnData.read_h5ad(filename)
-    anndata.__class__ = RangeAnnData
-    return anndata
+    adata = anndata.read_h5ad(filename)
+    adata.__class__ = RangeAnnData
+    return adata
+
 
 def read_h5mu(filename):
     """Read mudata object from h5mu file and change __class__ to RangeMuData"""
-    mudata = MuData.read_h5mu(filename)
-    mudata.__class__ = RangeMuData
-    return mudata
+    mu = mudata.read_h5mu(filename)
+    mu.__class__ = RangeMuData
+    return mu
